@@ -17,6 +17,11 @@ class ViewController: UIViewController {
     // create an array that contains the names of he different monsters
     var monsters = ["Astro", "Fluffy", "Munchie", "Squido"]
     
+    // all of these IBOutlets are created as optionals, in swift this means that they may contain a value or they may be nil (null in java)
+    @IBOutlet weak var amountTextField: UITextField!
+    @IBOutlet weak var tipPercentTextField: UITextField!
+    @IBOutlet weak var tipLabel: UILabel!
+    
     // equivalent of the onCreate method in the java andorid class
     // called whenthe scene that it controls is accessed (do initializtion work here)
     override func viewDidLoad() {
@@ -42,6 +47,36 @@ class ViewController: UIViewController {
         
         // set the imahe of the image view to a new UIImage, the new UIImage is the element in the monsters array that matches the index
         monsterImageView.image = UIImage(named: monsters[index])
+    }
+    
+    // Gives our vie controller the ability to respond to the button being pushed
+    @IBAction func calculateTip(_ sender: UIButton) {
+        
+        var dTip = 0.0
+        var dAmount = 0.0
+        var dPercenet = 0.0
+        
+        // get the values in the TextFields, if a value extists ans assig the values to constants
+        // the text fields are optionals so they could have a value or just be nil
+        if let amount = amountTextField.text, let percent = tipPercentTextField.text {
+            
+            // trim the white space that may exist at the beginning or the ending of the constants
+            let trimmedAdmount = amount.trimmingCharacters(in: .whitespaces)
+            let trimmedPercent = percent.trimmingCharacters(in: .whitespaces)
+            
+            // check to make sure that the trimmed constants are not empty
+            if (!trimmedAdmount.isEmpty && !trimmedPercent.isEmpty){
+                
+                // convert the trimmed constants to doubles
+                dAmount = Double(trimmedAdmount)!
+                dPercenet = Double(trimmedPercent)!
+                
+                // calculate the tip
+                dTip = dAmount * dPercenet
+            }
+        }
+        
+        tipLabel.text = "Tip is $\(String(dTip))"
     }
     
 }
