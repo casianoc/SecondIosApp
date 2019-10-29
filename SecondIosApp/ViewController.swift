@@ -22,6 +22,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var tipPercentTextField: UITextField!
     @IBOutlet weak var tipLabel: UILabel!
     
+    // create a string that will store the calulated tip sent to the NewViewController
+    var calculatedTip = ""
+    
     // equivalent of the onCreate method in the java andorid class
     // called whenthe scene that it controls is accessed (do initializtion work here)
     override func viewDidLoad() {
@@ -77,6 +80,27 @@ class ViewController: UIViewController {
         }
         
         tipLabel.text = "Tip is $\(String(dTip))"
+        
+        // store the calculatedTip in the string
+        calculatedTip = "Tip is $\(String(dTip))"
+        
+        //segue to the NewViewController by calling this method
+        // this method requires that the prepar emethod be overridden
+        performSegue(withIdentifier: "GoToNewView", sender: nil)
+    }
+    
+    // this method creates an instanc eof the ViewController that's being segued to and it passes the viewController the calculated tip
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // checking if we are segueing to the ViewController that has the identifier GoToNewView
+        if segue.identifier == "GoToNewView"{
+            
+            // create an instance of that View Controller
+            // checking if the segue destination is castable to a new ViewController and we are casting it if it is, else returning nil
+            let newViewController = segue.destination as? NewViewController
+            // set the insatnce's tipToShow property equal to the calulated tip
+            newViewController?.tipToShow = calculatedTip
+        }
     }
     
 }
